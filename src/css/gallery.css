@@ -3,7 +3,8 @@
     flex-wrap: wrap;
     row-gap: 24px;
     column-gap: 24px;
-    width: 1128px;
+    /* width: 1896px; */
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
 }
@@ -63,4 +64,12 @@
 .downloads {
     width: 74px;
     margin-left: 32px;
+}
+
+.load-more-button {
+    display: none;
+}
+
+.load-more-button.active {
+    display: inline;
 }

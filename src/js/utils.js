@@ -2,10 +2,15 @@
 
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
-import configuration from './configuration.js';
+import settings from './settings.js';
 
-const displayMessage = message => {
-  iziToast.settings(configuration.IZI_TOAST_SETTINGS);
+export const showToastError = message => {
+  iziToast.settings(settings.IZI_TOAST_ERROR);
+  iziToast.error({ message: message });
+};
+
+export const showToastInfo = message => {
+  iziToast.settings(settings.IZI_TOAST_INFO);
   iziToast.error({ message: message });
 };
 
@@ -17,4 +22,4 @@ const hideElement = element => {
   element.classList.remove('active');
 };
 
-export default { displayMessage, showElement, hideElement };
+export default { showToastError, showToastInfo, showElement, hideElement };
