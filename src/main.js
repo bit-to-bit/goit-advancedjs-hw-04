@@ -34,6 +34,16 @@ const scrollGallery = page => {
   });
 };
 
+const showLoadMoreBtn = () => {
+  loadMoreBtnEl.classList.add('active');
+  loadMoreBtnEl.addEventListener('click', onLoadMoreBtnClick);
+};
+
+const hideLoadMoreBtn = () => {
+  loadMoreBtnEl.classList.remove('active');
+  loadMoreBtnEl.removeEventListener('click', onLoadMoreBtnClick);
+};
+
 const onSearchFormSubmit = async event => {
   try {
     event.preventDefault();
@@ -42,8 +52,7 @@ const onSearchFormSubmit = async event => {
     page = 1;
     galleryEl.innerHTML = '';
 
-    loadMoreBtnEl.classList.remove('active');
-    loadMoreBtnEl.removeEventListener('click', onLoadMoreBtnClick);
+    hideLoadMoreBtn();
 
     if (!searchQuery) {
       showToastError('Please, enter a search phrase!');
@@ -68,8 +77,7 @@ const onSearchFormSubmit = async event => {
     addPhotosToGallery(response.data.hits);
 
     if (response.data.totalHits > PER_PAGE) {
-      loadMoreBtnEl.classList.add('active');
-      loadMoreBtnEl.addEventListener('click', onLoadMoreBtnClick);
+      showLoadMoreBtn();
     }
   } catch (err) {
     console.log(err);
@@ -79,17 +87,18 @@ const onSearchFormSubmit = async event => {
 const onLoadMoreBtnClick = async event => {
   try {
     page++;
+    hideLoadMoreBtn();
     loaderEl.classList.add('active');
     const response = await fetchPhotosByQuery(searchQuery, page);
     loaderEl.classList.remove('active');
     addPhotosToGallery(response.data.hits);
     scrollGallery(page);
     if (page * PER_PAGE >= response.data.totalHits) {
-      loadMoreBtnEl.classList.remove('active');
-      loadMoreBtnEl.removeEventListener('click', onLoadMoreBtnClick);
       showToastInfo(
         "We're sorry, but you've reached the end of search results."
       );
+    } else {
+      showLoadMoreBtn();
     }
   } catch (error) {}
 };
